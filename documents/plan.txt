@@ -1,0 +1,5 @@
+The first item that can be drawn and manipulated is an ENTITY. An entity is represented by a rectangle, and has a label, a description, and a content space.
+The label is printed at a certain scale, the description added when scaling in, and the content space shown when scaling in more.
+
+Other entities can be placed inside of a content space without limit.
+
