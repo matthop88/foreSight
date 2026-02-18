@@ -20,16 +20,16 @@ love.draw = function()
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
-local engine = require("app/plugins/engine")
-engine:add("doubleClick", { accessorFnName = "getDoubleClick" })
-engine:add("scrolling",   { imageViewer = gfx })
-engine:add("zooming",     { imageViewer = gfx })
-engine:add("questionBox",
-    {   x                = 1150,
-        useDoubleClick   = true,
-        getDoubleClickFn = getDoubleClick,
-        lines = {
-            { "Arrows", "Pan"         },
-            { "Z/A",    "Zoom In/Out" },
-        },
-    })
+require("app/plugins/engine")
+    :add("doubleClick", { accessorFnName = "getDoubleClick" })
+    :add("scrolling",   { imageViewer = gfx })
+    :add("zooming",     { imageViewer = gfx })
+    :add("questionBox",
+        {   x                = 1150,
+            useDoubleClick   = true,
+            getDoubleClickFn = getDoubleClick,
+            lines = {
+                { "Arrows", "Pan"         },
+                { "Z/A",    "Zoom In/Out" },
+            },
+        })
