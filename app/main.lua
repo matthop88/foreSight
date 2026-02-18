@@ -1,8 +1,7 @@
 local Graphics = require("app/lib/graphics")
 local Node     = require("app/diagram/node")
 
-local gfx    = Graphics:create()
-local hudFont = love.graphics.newFont(12)
+local gfx = Graphics:create()
 
 local nodes = {
     Node.new({ id = "power",   label = "Power System",   x =  60, y = 100, w = 200, h = 110, color = { 0.3,  0.55, 1.0  } }),
@@ -12,23 +11,25 @@ local nodes = {
     Node.new({ id = "ui",      label = "User Interface", x = 620, y = 195, w = 200, h = 110, color = { 0.7,  0.4,  0.9  } }),
 }
 
-local function drawHUD()
-    love.graphics.setFont(hudFont)
-    love.graphics.setColor(0.6, 0.6, 0.6, 1)
-    love.graphics.printf("arrows: pan    Z/A: zoom", 10, 10, 400, "left")
-end
-
 love.draw = function()
     gfx:clear(0.12, 0.12, 0.14, 1)
 
     for _, node in ipairs(nodes) do
         node:draw(gfx)
     end
-
-    drawHUD()
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
 local engine = require("app/plugins/engine")
-engine:add("scrolling", { imageViewer = gfx })
-engine:add("zooming",   { imageViewer = gfx })
+engine:add("doubleClick", { accessorFnName = "getDoubleClick" })
+engine:add("scrolling",   { imageViewer = gfx })
+engine:add("zooming",     { imageViewer = gfx })
+engine:add("questionBox",
+    {   x                = 1150,
+        useDoubleClick   = true,
+        getDoubleClickFn = getDoubleClick,
+        lines = {
+            { "Arrows", "Pan"         },
+            { "Z/A",    "Zoom In/Out" },
+        },
+    })
