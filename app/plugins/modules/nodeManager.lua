@@ -5,6 +5,12 @@ return {
         return self
     end,
 
+    draw = function(self)
+        for _, node in ipairs(self.nodes) do
+            node:draw(self.gfx)
+        end
+    end,
+
     update = function(self, dt)
         local wx, wy = self.gfx:screenToImageCoordinates(love.mouse.getPosition())
         for _, node in ipairs(self.nodes) do
