@@ -23,7 +23,8 @@ end
 require("app/plugins/engine")
     :add("doubleClick", { accessorFnName = "getDoubleClick" })
     :add("scrolling",   { imageViewer = gfx })
-    :add("zooming",     { imageViewer = gfx })
+    :add("zooming",       { imageViewer = gfx })
+    :add("nodeSelector",  { gfx = gfx, nodes = nodes })
     :add("questionBox",
         {   x                = 1150,
             useDoubleClick   = true,
