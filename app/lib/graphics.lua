@@ -54,7 +54,7 @@ return {
         
             setFontSize = function(self, fontSize)
                 self.fontSize = fontSize
-                self:setFont(self.FONTS:get(self.fontSize * self.scale))
+                self:setFont(self.FONTS:get(math.floor(self.fontSize)))
             end,
             
             ----------------------- Shape Drawing Functions --------------------
@@ -105,19 +105,26 @@ return {
         
             printf    = function(self, text, x, y, w, align)
                 -- Check to see if text is on screen
-                local leftOfText  = (x + self.x) * self.scale
-                local topOfText   = (y + self.y) * self.scale
-                local rightOfText  = leftOfText + (w * self.scale)
-                local bottomOfText = topOfText + (self.fontSize * self.scale)
+                local sx = (x + self.x) * self.scale
+                local sy = (y + self.y) * self.scale
+                local sw = w            * self.scale
+                local sh = self.fontSize * self.scale
 
-                if     leftOfText   < love.graphics:getWidth() 
-                   and rightOfText  > 0 
-                   and topOfText    < love.graphics:getHeight() 
-                   and bottomOfText > 0
+                if     sx      < love.graphics.getWidth()
+                   and sx + sw > 0
+                   and sy      < love.graphics.getHeight()
+                   and sy + sh > 0
                 then
-                    love.graphics.printf(text, (x + self.x) * self.scale, 
-                                               (y + self.y) * self.scale,
-                                                         w  * self.scale, align)
+                    -- Rasterize at 4x world size for crispness, then scale down by
+                    -- 1/4 so it displays at 1x world size. Net screen size is the
+                    -- same, but zoomed-in text has 4x more detail before degrading.
+                    local oversample = 4
+                    love.graphics.setFont(self.FONTS:get(math.floor(self.fontSize * oversample)))
+                    love.graphics.push()
+                    love.graphics.translate(sx, sy)
+                    love.graphics.scale(self.scale / oversample, self.scale / oversample)
+                    love.graphics.printf(text, 0, 0, w * oversample, align)
+                    love.graphics.pop()
                 end
             end,
         
