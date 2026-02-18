@@ -13,10 +13,6 @@ local nodes = {
 
 love.draw = function()
     gfx:clear(0.12, 0.12, 0.14, 1)
-
-    for _, node in ipairs(nodes) do
-        node:draw(gfx)
-    end
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
@@ -24,7 +20,7 @@ require("app/plugins/engine")
     :add("doubleClick", { accessorFnName = "getDoubleClick" })
     :add("scrolling",   { imageViewer = gfx })
     :add("zooming",       { imageViewer = gfx })
-    :add("nodeSelector",  { gfx = gfx, nodes = nodes })
+    :add("nodeManager",   { gfx = gfx, nodes = nodes })
     :add("questionBox",
         {   x                = 1150,
             useDoubleClick   = true,
