@@ -1,7 +1,12 @@
+local Node = require("app/diagram/node")
+
 return {
     init = function(self, params)
         self.gfx   = params.gfx
-        self.nodes = params.nodes
+        self.nodes = {}
+        for _, nodeParams in ipairs(params.nodes) do
+            table.insert(self.nodes, Node.new(nodeParams))
+        end
         return self
     end,
 
