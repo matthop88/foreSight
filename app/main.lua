@@ -12,6 +12,12 @@ local nodes = {
     Node.new({ id = "ui",      label = "User Interface", x = 620, y = 195, w = 200, h = 110, color = { 0.7,  0.4,  0.9  } }),
 }
 
+local function drawHUD()
+    love.graphics.setFont(hudFont)
+    love.graphics.setColor(0.6, 0.6, 0.6, 1)
+    love.graphics.printf("arrows: pan    Z/A: zoom", 10, 10, 400, "left")
+end
+
 love.draw = function()
     gfx:clear(0.12, 0.12, 0.14, 1)
 
@@ -19,10 +25,7 @@ love.draw = function()
         node:draw(gfx)
     end
 
-    -- HUD: drawn directly in screen space, unaffected by pan/zoom
-    love.graphics.setFont(hudFont)
-    love.graphics.setColor(0.6, 0.6, 0.6, 1)
-    love.graphics.printf("arrows: pan    Z/A: zoom", 10, 10, 400, "left")
+    drawHUD()
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
