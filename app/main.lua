@@ -1,28 +1,28 @@
 local Graphics = require("app/lib/graphics")
+local Node     = require("app/diagram/node")
 
 local gfx = Graphics:create()
 
--- Draw a simple test scene in world coordinates.
--- Pan with arrow keys, zoom in/out with Z/A.
+local nodes = {
+    Node.new({ id = "power",   label = "Power System",   x =  60, y = 100, w = 200, h = 110, color = { 0.3,  0.55, 1.0  } }),
+    Node.new({ id = "control", label = "Control System", x = 340, y = 100, w = 200, h = 110, color = { 0.2,  0.75, 0.5  } }),
+    Node.new({ id = "sensors", label = "Sensors",        x =  60, y = 290, w = 200, h = 110, color = { 0.9,  0.55, 0.2  } }),
+    Node.new({ id = "actuate", label = "Actuators",      x = 340, y = 290, w = 200, h = 110, color = { 0.85, 0.3,  0.3  } }),
+    Node.new({ id = "ui",      label = "User Interface", x = 620, y = 195, w = 200, h = 110, color = { 0.7,  0.4,  0.9  } }),
+}
+
 love.draw = function()
     gfx:clear(0.12, 0.12, 0.14, 1)
 
-    -- Grid of rectangles to make pan/zoom visible
-    gfx:setColor(0.3, 0.55, 1, 1)
-    for row = 0, 4 do
-        for col = 0, 5 do
-            gfx:rectangle("line", col * 180, row * 140, 140, 100)
-        end
+    for _, node in ipairs(nodes) do
+        node:draw(gfx)
     end
 
-    -- A filled marker at the world origin
-    gfx:setColor(1, 0.4, 0.4, 1)
-    gfx:rectangle("fill", -10, -10, 20, 20)
-
-    -- Label
-    gfx:setColor(1, 1, 1, 1)
-    gfx:setFontSize(14)
-    gfx:printf("ForeSight  |  arrows: pan    Z/A: zoom", 0, -40, 600, "left")
+    -- HUD: help text fixed to screen position (10, 10)
+    local hx, hy = gfx:screenToImageCoordinates(10, 10)
+    gfx:setColor(0.6, 0.6, 0.6, 1)
+    gfx:setFontSize(12)
+    gfx:printf("arrows: pan    Z/A: zoom", hx, hy, 400, "left")
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
