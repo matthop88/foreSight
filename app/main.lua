@@ -1,7 +1,8 @@
 local Graphics = require("app/lib/graphics")
 local Node     = require("app/diagram/node")
 
-local gfx = Graphics:create()
+local gfx    = Graphics:create()
+local hudFont = love.graphics.newFont(12)
 
 local nodes = {
     Node.new({ id = "power",   label = "Power System",   x =  60, y = 100, w = 200, h = 110, color = { 0.3,  0.55, 1.0  } }),
@@ -18,11 +19,10 @@ love.draw = function()
         node:draw(gfx)
     end
 
-    -- HUD: help text fixed to screen position (10, 10)
-    local hx, hy = gfx:screenToImageCoordinates(10, 10)
-    gfx:setColor(0.6, 0.6, 0.6, 1)
-    gfx:setFontSize(12)
-    gfx:printf("arrows: pan    Z/A: zoom", hx, hy, 400, "left")
+    -- HUD: drawn directly in screen space, unaffected by pan/zoom
+    love.graphics.setFont(hudFont)
+    love.graphics.setColor(0.6, 0.6, 0.6, 1)
+    love.graphics.printf("arrows: pan    Z/A: zoom", 10, 10, 400, "left")
 end
 
 -- Require engine AFTER love.draw is defined so the engine captures it as oldDraw.
