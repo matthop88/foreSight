@@ -12,8 +12,8 @@ require("app/plugins/engine")
     :add("scrolling",   { imageViewer = gfx })
     :add("zooming",     { imageViewer = gfx })
     :add("nodeManager", {
-        gfx   = gfx,
-        nodes = require("app/diagram/nodes"),
+        gfx     = gfx,
+        diagram = require("app/diagram/sampleDiagram"),
     })
     :add("questionBox",
         {   x                = 1150,
