@@ -1,16 +1,31 @@
 local Node = require("app/diagram/node")
+local Edge = require("app/diagram/edge")
 
 return {
     init = function(self, params)
         self.gfx   = params.gfx
         self.nodes = {}
-        for _, nodeParams in ipairs(params.nodes) do
-            table.insert(self.nodes, Node.new(nodeParams))
+        self.edges = {}
+
+        -- Build nodes and an id→node map for edge wiring
+        local nodeMap = {}
+        for _, nodeParams in ipairs(params.diagram.nodes or {}) do
+            local node = Node.new(nodeParams)
+            table.insert(self.nodes, node)
+            nodeMap[nodeParams.id] = node
         end
+
+        for _, edgeParams in ipairs(params.diagram.edges or {}) do
+            table.insert(self.edges, Edge.new(edgeParams, nodeMap))
+        end
+
         return self
     end,
 
     draw = function(self)
+        for _, edge in ipairs(self.edges) do
+            edge:draw(self.gfx)
+        end
         for _, node in ipairs(self.nodes) do
             node:draw(self.gfx)
         end
