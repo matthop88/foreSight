@@ -79,6 +79,16 @@ return {
                                    (y2 + self.y) * self.scale)
             end,
         
+            polygon   = function(self, mode, ...)
+                local args = { ... }
+                local transformed = {}
+                for i = 1, #args, 2 do
+                    table.insert(transformed, (args[i]   + self.x) * self.scale)
+                    table.insert(transformed, (args[i+1] + self.y) * self.scale)
+                end
+                love.graphics.polygon(mode, transformed)
+            end,
+
             circle    = function(self, mode, x, y, radius)
                 love.graphics.setLineWidth(self.lineWidth * self.scale)
                 love.graphics.circle(mode, (x + self.x) * self.scale,
