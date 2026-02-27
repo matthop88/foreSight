@@ -19,6 +19,15 @@ function Node.new(params)
                and wy >= self.y and wy < self.y + self.h
         end,
 
+        drawLabel = function(self, gfx)
+            gfx:setFontSize(14)
+            local lineHeight = gfx:getFontHeight()
+            local numLines   = select(2, self.label:gsub("\n", "\n")) + 1
+            local textY      = self.y + (self.h - numLines * lineHeight) / 2
+            gfx:setColor(1, 1, 1, 1)
+            gfx:printf(self.label, self.x + 8, textY, self.w - 16, "center")
+        end,
+
         draw = function(self, gfx)
             local r, g, b = self.color[1], self.color[2], self.color[3]
 
@@ -40,11 +49,7 @@ function Node.new(params)
             gfx:rectangle("line", self.x, self.y, self.w, self.h)
             gfx:setLineWidth(1)
 
-            -- Label, vertically centered
-            gfx:setFontSize(14)
-            local textY = self.y + (self.h - gfx:getFontHeight()) / 2
-            gfx:setColor(1, 1, 1, 1)
-            gfx:printf(self.label, self.x + 8, textY, self.w - 16, "center")
+            self:drawLabel(gfx)
         end,
     }
 end
