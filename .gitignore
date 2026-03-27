@@ -1,6 +1,9 @@
 # Compiled Lua sources
 luac.out
 
+# Project-specific private data
+app/diagram/corlSales.lua
+
 # luarocks build files
 *.src.rock
 *.zip
