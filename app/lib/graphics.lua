@@ -20,11 +20,13 @@ return {
             ---------------------- Property Getter Functions -------------------
         
             getFontHeight = function(self)
-                return self.FONTS:get(self.fontSize):getHeight()
+                local oversample = 4
+                return self.FONTS:get(math.floor(self.fontSize * oversample)):getHeight() / oversample
             end,
         
             getFontWidth = function(self, label)
-                return self.FONTS:get(self.fontSize):getWidth(label)
+                local oversample = 4
+                return self.FONTS:get(math.floor(self.fontSize * oversample)):getWidth(label) / oversample
             end,
             
             ---------------------- Property Setter Functions -------------------
