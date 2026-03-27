@@ -3,6 +3,7 @@ luac.out
 
 # Project-specific private data
 app/diagram/corlSales.lua
+app/diagram/snsFanOut.lua
 
 # luarocks build files
 *.src.rock
