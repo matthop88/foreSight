@@ -4,6 +4,7 @@ function Node.new(params)
     return {
         id       = params.id       or "node",
         label    = params.label    or "",
+        title    = params.title,
         x        = params.x        or 0,
         y        = params.y        or 0,
         w        = params.w        or 200,
@@ -17,6 +18,26 @@ function Node.new(params)
         containsPoint = function(self, wx, wy)
             return wx >= self.x and wx < self.x + self.w
                and wy >= self.y and wy < self.y + self.h
+        end,
+
+        drawTitle = function(self, gfx)
+            if not self.title then return end
+
+            local r, g, b = self.color[1], self.color[2], self.color[3]
+            local px, py  = 10, 4
+
+            gfx:setFontSize(11)
+            local tw = gfx:getFontWidth(self.title) + px * 2
+            local th = gfx:getFontHeight()          + py * 2
+            local tx = self.x + (self.w - tw) / 2
+            local ty = self.y - th / 2   -- top edge of node bisects the title
+
+            gfx:setColor(r, g, b, 0.9)
+            gfx:rectangle("fill", tx, ty, tw, th)
+            gfx:setColor(r, g, b, 1)
+            gfx:rectangle("line", tx, ty, tw, th)
+            gfx:setColor(1, 1, 1, 1)
+            gfx:printf(self.title, tx + px, ty + py, tw - px * 2, "left")
         end,
 
         drawLabel = function(self, gfx)
@@ -50,6 +71,7 @@ function Node.new(params)
             gfx:setLineWidth(1)
 
             self:drawLabel(gfx)
+            self:drawTitle(gfx)
         end,
     }
 end
