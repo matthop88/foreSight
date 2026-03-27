@@ -1,11 +1,28 @@
-return {
-    nodes = {
-        { id = "input",     label = "Input\nComponent",      x =  60, y = 300, w = 240, h = 120, color = { 0.3,  0.55, 1.0  } },
-        { id = "processor", label = "Processor",  x = 380, y = 300, w = 240, h = 120, color = { 0.9,  0.55, 0.2  } },
-        { id = "output",    label = "Output\nComponent",     x = 700, y = 300, w = 240, h = 120, color = { 0.25, 0.75, 0.45 } },
-    },
-    edges = {
-        { from = "input",     to = "processor" },
-        { from = "processor", to = "output"    },
-    },
+-- Source → Publisher → N Subscribers (fan-out pattern)
+local SUBSCRIBER_TYPES = { "type-a", "type-b", "type-c", "type-d", "type-e", "type-f", "type-g", "type-h" }
+
+local nodes = {
+    { id = "source",    label = "Source",    title = "Input",     x =  50, y = 435, w = 230, h = 90, color = { 0.9,  0.45, 0.1 } },
+    { id = "publisher", label = "Publisher", title = "Messaging", x = 340, y = 435, w = 250, h = 90, color = { 0.75, 0.2,  0.6 } },
 }
+
+local edges = {
+    { from = "source", to = "publisher" },
+}
+
+for i, subType in ipairs(SUBSCRIBER_TYPES) do
+    local id = "subscriber_" .. subType
+    table.insert(nodes, {
+        id    = id,
+        label = "subscriber-" .. subType,
+        title = "Queue",
+        x     = 650,
+        y     = 50 + (i - 1) * 110,
+        w     = 260,
+        h     = 90,
+        color = { 0.2, 0.65, 0.7 },
+    })
+    table.insert(edges, { from = "publisher", to = id })
+end
+
+return { nodes = nodes, edges = edges }
